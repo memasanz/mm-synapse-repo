@@ -101,7 +101,7 @@
 					"name": "SQL_Serverless"
 				},
 				"content": {
-					"query": "select * from tester",
+					"query": "select * from tester2",
 					"metadata": {
 						"language": "sql"
 					},
