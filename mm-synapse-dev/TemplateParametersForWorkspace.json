@@ -5,17 +5,8 @@
 		"workspaceName": {
 			"value": "mm-synapse-dev"
 		},
-		"LS_ADLSGEN2_accountKey": {
-			"value": ""
-		},
 		"mm-synapse-dev-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
-		},
-		"LS_ADLSGEN2_properties_typeProperties_url": {
-			"value": "https://mmadlsdev.dfs.core.windows.net/"
-		},
-		"LS_AKV_properties_typeProperties_baseUrl": {
-			"value": "https://mm-kv-dev.vault.azure.net/"
 		},
 		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://mmxsynapsexdev.dfs.core.windows.net"
