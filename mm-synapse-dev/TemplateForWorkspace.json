@@ -11,19 +11,32 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'mm-synapse-dev-WorkspaceDefaultSqlServer'"
 		},
-		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
-			"type": "string",
-			"defaultValue": "https://mmxsynapsexdev.dfs.core.windows.net"
-		},
 		"LS_KeyVault_properties_typeProperties_baseUrl": {
 			"type": "string",
 			"defaultValue": "https://mm-kv-dev.vault.azure.net/"
+		},
+		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://mmxsynapsexdev.dfs.core.windows.net"
 		}
 	},
 	"variables": {
 		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/LS_KeyVault')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('LS_KeyVault_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('workspaceName'), '/mm-synapse-dev-WorkspaceDefaultSqlServer')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
@@ -105,7 +118,7 @@
 					"name": "SQL_Serverless"
 				},
 				"content": {
-					"query": "select * from tester2",
+					"query": "select * from tester23",
 					"metadata": {
 						"language": "sql"
 					},
@@ -116,19 +129,6 @@
 					"resultLimit": 5000
 				},
 				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/LS_KeyVault')]",
-			"type": "Microsoft.Synapse/workspaces/linkedServices",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"annotations": [],
-				"type": "AzureKeyVault",
-				"typeProperties": {
-					"baseUrl": "[parameters('LS_KeyVault_properties_typeProperties_baseUrl')]"
-				}
 			},
 			"dependsOn": []
 		}
