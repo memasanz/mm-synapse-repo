@@ -118,7 +118,7 @@
 					"name": "SQL_Serverless"
 				},
 				"content": {
-					"query": "select * from tester23",
+					"query": "select * from tester234",
 					"metadata": {
 						"language": "sql"
 					},
@@ -129,6 +129,15 @@
 					"resultLimit": 5000
 				},
 				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/pool001')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": []
 			},
 			"dependsOn": []
 		}
