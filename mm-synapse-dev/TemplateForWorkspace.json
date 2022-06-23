@@ -14,6 +14,10 @@
 		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mmxsynapsexdev.dfs.core.windows.net"
+		},
+		"LS_Keyvault_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://mm-kv-dev.vault.azure.net/"
 		}
 	},
 	"variables": {
@@ -89,6 +93,19 @@
 			"properties": {
 				"type": "ManagedIdentity",
 				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/LS_Keyvault')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('LS_Keyvault_properties_typeProperties_baseUrl')]"
+				}
 			},
 			"dependsOn": []
 		}
