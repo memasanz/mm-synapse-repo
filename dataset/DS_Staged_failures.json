@@ -1,10 +1,6 @@
 {
 	"name": "DS_Staged_failures",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "LS_ADLSGEN2",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
