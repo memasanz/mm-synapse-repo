@@ -1,0 +1,21 @@
+{
+	"name": "DS_Staged_failures",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_ADLSGEN2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "failures",
+				"fileSystem": "staged"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}
