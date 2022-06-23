@@ -8,9 +8,6 @@
 		"mm-synapse-dev-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
 		},
-		"LS_Keyvault_properties_typeProperties_baseUrl": {
-			"value": "https://mm-kv-dev.vault.azure.net/"
-		},
 		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://mmxsynapsexdev.dfs.core.windows.net"
 		}
