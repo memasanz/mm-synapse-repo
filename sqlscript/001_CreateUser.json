@@ -1,0 +1,20 @@
+{
+	"name": "001_CreateUser",
+	"properties": {
+		"folder": {
+			"name": "DedicatedSQLPool"
+		},
+		"content": {
+			"query": "--run on dedicated sql pool on master\nCREATE LOGIN LoaderRC20 WITH PASSWORD = 'a123STRONGpassword!';\nCREATE USER LoaderRC20 FOR LOGIN LoaderRC20;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "samplededicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,11 +1,11 @@
 {
-	"name": "SQL script 1",
+	"name": "006_viewsystemqueries",
 	"properties": {
 		"folder": {
-			"name": "SQL_Serverless"
+			"name": "DedicatedSQLPool"
 		},
 		"content": {
-			"query": "select * from tester234",
+			"query": "SELECT * FROM sys.dm_pdw_exec_requests;",
 			"metadata": {
 				"language": "sql"
 			},

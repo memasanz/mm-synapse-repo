@@ -1,0 +1,20 @@
+{
+	"name": "002_createdatabaseuser",
+	"properties": {
+		"folder": {
+			"name": "DedicatedSQLPool"
+		},
+		"content": {
+			"query": "-- run on samplededicated on database samplededicated\nCREATE USER LoaderRC20 FOR LOGIN LoaderRC20;\nGRANT CONTROL ON DATABASE::[samplededicated] to LoaderRC20;\nEXEC sp_addrolemember 'staticrc20', 'LoaderRC20';",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "samplededicated",
+				"poolName": "samplededicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
