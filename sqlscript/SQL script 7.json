@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 7",
+	"properties": {
+		"content": {
+			"query": "IF 1=1\n\tCREATE EXTERNAL DATA SOURCE [raw_mmxsynapsex_dfs_core_windows_net] WITH \n\t(\tTYPE = HADOOP,\n\t\tLOCATION = N'abfss://raw@mmxsynapsexdev.dfs.core.windows.net'\n\t);\n\tGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "samplededicated",
+				"poolName": "samplededicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
