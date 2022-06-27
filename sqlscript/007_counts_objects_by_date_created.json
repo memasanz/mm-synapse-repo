@@ -1,5 +1,5 @@
 {
-	"name": "SQL script 2",
+	"name": "007_counts_objects_by_date_created",
 	"properties": {
 		"folder": {
 			"name": "DedicatedSQLPool"
