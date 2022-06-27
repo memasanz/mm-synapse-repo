@@ -1,0 +1,20 @@
+{
+	"name": "008_insert_medallian",
+	"properties": {
+		"folder": {
+			"name": "DedicatedSQLPool"
+		},
+		"content": {
+			"query": "CREATE PROCEDURE insert_Medallion\n                            @id  INT,\n                            @key NVARCHAR(255),\n                            @code NVARCHAR(255)\nAS BEGIN \n\n    insert into dbo.Medallion values (@id, @key, @code)\n    \nEND",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "samplededicated",
+				"poolName": "samplededicated"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
