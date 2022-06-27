@@ -2,7 +2,7 @@
 	"name": "SQL script 3",
 	"properties": {
 		"content": {
-			"query": "DECLARE @start_date datetime2(7)\nDECLARE @end_date datetime2(7)\n\n -- TODO: Set parameter values here \n\n EXECUTE [dbo].[count_objects_by_date_created]\n\t@start_date,\n\t@end_date",
+			"query": "DECLARE @start_date datetime2(7)\nDECLARE @end_date datetime2(7)\n\n -- TODO: Set parameter values\n\n EXECUTE [dbo].[count_objects_by_date_created]\n\t@start_date,\n\t@end_date",
 			"metadata": {
 				"language": "sql"
 			},
