@@ -5,7 +5,7 @@
 			"name": "DedicatedSQLPool"
 		},
 		"content": {
-			"query": "--https://docs.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/load-data-from-azure-blob-storage-using-copy\n--run on dedicated sql pool on master\nCREATE LOGIN LoaderRC20 WITH PASSWORD = 'a123STRONGpassword!';\nCREATE USER LoaderRC20 FOR LOGIN LoaderRC20;",
+			"query": "--https://docs.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/load-data-from-azure-blob-storage-using-copy\n--run on dedicated sql pool on master\n--another sample\nCREATE LOGIN LoaderRC20 WITH PASSWORD = 'a123STRONGpassword!';\nCREATE USER LoaderRC20 FOR LOGIN LoaderRC20;",
 			"metadata": {
 				"language": "sql"
 			},
