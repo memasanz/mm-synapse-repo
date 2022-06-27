@@ -329,6 +329,49 @@
 			},
 			"dependsOn": [],
 			"location": "eastus"
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/008_insert_medallian')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"folder": {
+					"name": "DedicatedSQLPool"
+				},
+				"content": {
+					"query": "CREATE PROCEDURE insert_Medallion\n                            @id  INT,\n                            @key NVARCHAR(255),\n                            @code NVARCHAR(255)\nAS BEGIN \n\n    insert into dbo.Medallion values (@id, @key, @code)\n    \nEND",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "samplededicated",
+						"poolName": "samplededicated"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/008a_insert_mediallian_testing')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "-- DECLARE @id int\n-- DECLARE @key nvarchar(255)\n-- DECLARE @code nvarchar(255)\n\n--  -- TODO: Set parameter values here \n--  set @id = 0;\n--  set @key = 'test';\n--  set @code = 'something';\n\n--  EXECUTE [dbo].[insert_Medallion]\n-- \t@id,\n-- \t@key,\n-- \t@code\n\n-- select * from dbo.Medallion where MedallionID = 0\n\n-- delete from dbo.Medallion where MedallionID = 0",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "samplededicated",
+						"poolName": "samplededicated"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
 		}
 	]
 }
