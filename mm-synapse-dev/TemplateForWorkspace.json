@@ -248,30 +248,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
-			"type": "Microsoft.Synapse/workspaces/sqlscripts",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"folder": {
-					"name": "SQL_Serverless"
-				},
-				"content": {
-					"query": "select * from tester234",
-					"metadata": {
-						"language": "sql"
-					},
-					"currentConnection": {
-						"databaseName": "samplededicated",
-						"poolName": "samplededicated"
-					},
-					"resultLimit": 5000
-				},
-				"type": "SqlQuery"
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 2')]",
+			"name": "[concat(parameters('workspaceName'), '/007_counts_objects_by_date_created')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
@@ -294,12 +271,15 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/SQL script 3')]",
+			"name": "[concat(parameters('workspaceName'), '/SQL script 1')]",
 			"type": "Microsoft.Synapse/workspaces/sqlscripts",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
+				"folder": {
+					"name": "SQL_Serverless"
+				},
 				"content": {
-					"query": "DECLARE @start_date datetime2(7)\nDECLARE @end_date datetime2(7)\n\n -- TODO: Set parameter values\n\n EXECUTE [dbo].[count_objects_by_date_created]\n\t@start_date,\n\t@end_date",
+					"query": "select * from tester234",
 					"metadata": {
 						"language": "sql"
 					},
