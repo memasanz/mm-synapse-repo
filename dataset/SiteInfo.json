@@ -1,0 +1,33 @@
+{
+	"name": "SiteInfo",
+	"properties": {
+		"annotations": [],
+		"type": "SqlPoolTable",
+		"schema": [
+			{
+				"name": "Site",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SiteName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SiteLocation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "State",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "siteinfo"
+		},
+		"sqlPool": {
+			"referenceName": "samplededicated",
+			"type": "SqlPoolReference"
+		}
+	}
+}
