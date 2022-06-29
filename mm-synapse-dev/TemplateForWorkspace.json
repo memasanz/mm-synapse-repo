@@ -7,10 +7,6 @@
 			"metadata": "Workspace name",
 			"defaultValue": "mm-synapse-dev"
 		},
-		"LS_Datalake_accountKey": {
-			"type": "secureString",
-			"metadata": "Secure string for 'accountKey' of 'LS_Datalake'"
-		},
 		"mm-synapse-dev-WorkspaceDefaultSqlServer_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'mm-synapse-dev-WorkspaceDefaultSqlServer'"
@@ -26,6 +22,10 @@
 		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://mmxsynapsexdev.dfs.core.windows.net"
+		},
+		"Ls_Rest_MelParkSensors_01_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://data.melbourne.vic.gov.au/resource/"
 		}
 	},
 	"variables": {
@@ -78,11 +78,7 @@
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "[parameters('LS_Datalake_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('LS_Datalake_accountKey')]"
-					}
+					"url": "[parameters('LS_Datalake_properties_typeProperties_url')]"
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",
@@ -423,69 +419,27 @@
 			"location": "eastus"
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/Notebook 1')]",
-			"type": "Microsoft.Synapse/workspaces/notebooks",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"nbformat": 4,
-				"nbformat_minor": 2,
-				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
-					"numExecutors": 2,
-					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "9d0eac24-b0c9-4da9-90eb-5f0eb1337e85"
-					}
-				},
-				"metadata": {
-					"saveOutput": true,
-					"enableDebugMode": false,
-					"kernelspec": {
-						"name": "synapse_pyspark",
-						"display_name": "python"
-					},
-					"language_info": {
-						"name": "python"
-					},
-					"sessionKeepAliveTimeout": 30
-				},
-				"cells": [
-					{
-						"cell_type": "code",
-						"metadata": {},
-						"source": [
-							""
-						],
-						"outputs": [],
-						"execution_count": null
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/00_setup')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
 				"nbformat": 4,
 				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "pool002",
+					"type": "BigDataPoolReference"
+				},
 				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
 					"numExecutors": 2,
 					"conf": {
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "13fb70e0-d5be-44f6-961a-0a3086743a41"
+						"spark.autotune.trackingId": "f3b1901f-5642-4e78-8e17-d5b27a47cc44"
 					}
 				},
 				"metadata": {
@@ -497,6 +451,21 @@
 					},
 					"language_info": {
 						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/5da07161-3770-4a4b-aa43-418cbbb627cf/resourceGroups/mm-synapse-dev-rg/providers/Microsoft.Synapse/workspaces/mm-synapse-dev/bigDataPools/pool002",
+						"name": "pool002",
+						"type": "Spark",
+						"endpoint": "https://mm-synapse-dev.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/pool002",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -532,11 +501,11 @@
 							]
 						},
 						"source": [
-							"keyvaultlsname = 'Ls_KeyVault_01'\n",
-							"adls2lsname = 'Ls_AdlsGen2_01'"
+							"keyvaultlsname = 'LS_KeyVault'\n",
+							"adls2lsname = 'mm-synapse-dev-WorkspaceDefaultStorage'"
 						],
 						"outputs": [],
-						"execution_count": 2
+						"execution_count": 1
 					},
 					{
 						"cell_type": "markdown",
@@ -572,12 +541,64 @@
 							"token_library = sc._jvm.com.microsoft.azure.synapse.tokenlibrary.TokenLibrary\n",
 							"storage_account = token_library.getSecretWithLS(keyvaultlsname, \"datalakeaccountname\")\n",
 							"\n",
-							"spark.conf.set(\"spark.storage.synapse.linkedServiceName\", adls2lsname)\n",
-							"spark.conf.set(\"fs.azure.account.oauth.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedTokenProvider\")\n",
+							"\n",
 							""
 						],
 						"outputs": [],
-						"execution_count": 3
+						"execution_count": 2
+					},
+					{
+						"cell_type": "markdown",
+						"metadata": {
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							""
+						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# spark.conf.set(\"spark.storage.synapse.linkedServiceName\", adls2lsname)\r\n",
+							"# #spark.conf.set(\"fs.azure.account.oauth.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedTokenProvider\")"
+						],
+						"outputs": [],
+						"execution_count": 64
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# spark.conf.set(\"spark.storage.synapse.linkedServiceName\", adls2lsname)\r\n",
+							"# #spark.conf.set(\"fs.azure.account.oauth.provider.type\", \"com.microsoft.azure.synapse.tokenlibrary.LinkedServiceBasedTokenProvider\")"
+						],
+						"outputs": [],
+						"execution_count": 65
 					},
 					{
 						"cell_type": "markdown",
@@ -613,7 +634,7 @@
 							"spark.sql(f\"CREATE SCHEMA IF NOT EXISTS malformed LOCATION 'abfss://datalake@{storage_account}.dfs.core.windows.net/data'\")"
 						],
 						"outputs": [],
-						"execution_count": 9
+						"execution_count": 4
 					},
 					{
 						"cell_type": "markdown",
@@ -650,7 +671,7 @@
 							"spark.sql(f\"REFRESH TABLE dw.fact_parking\")"
 						],
 						"outputs": [],
-						"execution_count": 4
+						"execution_count": 5
 					},
 					{
 						"cell_type": "markdown",
@@ -695,7 +716,7 @@
 							"spark.sql(f\"REFRESH TABLE dw.dim_parking_bay\")"
 						],
 						"outputs": [],
-						"execution_count": 5
+						"execution_count": 6
 					},
 					{
 						"cell_type": "markdown",
@@ -728,17 +749,10 @@
 							"from pyspark.sql.functions import col\n",
 							"spark.sql(f\"DROP TABLE IF EXISTS dw.dim_date\")\n",
 							"spark.sql(f\"DROP TABLE IF EXISTS dw.dim_time\")\n",
-							"\n",
-							"# DimDate\n",
-							"dimdate = spark.read.csv(f\"abfss://datalake@{storage_account}.dfs.core.windows.net/data/seed/dim_date/dim_date.csv\", header=True)\n",
-							"dimdate.write.saveAsTable(\"dw.dim_date\")\n",
-							"\n",
-							"# DimTime\n",
-							"dimtime = spark.read.csv(f\"abfss://datalake@{storage_account}.dfs.core.windows.net/data/seed/dim_time/dim_time.csv\", header=True)\n",
-							"dimtime.write.saveAsTable(\"dw.dim_time\")"
+							""
 						],
 						"outputs": [],
-						"execution_count": 6
+						"execution_count": 7
 					},
 					{
 						"cell_type": "markdown",
@@ -752,6 +766,32 @@
 						"source": [
 							"# 7. Create interim and error tables"
 						]
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							"# DimDate\r\n",
+							"\r\n",
+							"dimdate = spark.read.csv(f\"abfss://datalake@{storage_account}.dfs.core.windows.net/data/seed/dim_date/dim_date.csv\", header=True)\r\n",
+							"dimdate.write.saveAsTable(\"dw.dim_date\")\r\n",
+							"\r\n",
+							"# DimTime\r\n",
+							"dimtime = spark.read.csv(f\"abfss://datalake@{storage_account}.dfs.core.windows.net/data/seed/dim_time/dim_time.csv\", header=True)\r\n",
+							"dimtime.write.saveAsTable(\"dw.dim_time\")"
+						],
+						"outputs": [],
+						"execution_count": 9
 					},
 					{
 						"cell_type": "code",
@@ -786,7 +826,26 @@
 							"spark.sql(f\"REFRESH TABLE malformed.sensor\")"
 						],
 						"outputs": [],
-						"execution_count": 8
+						"execution_count": 10
+					},
+					{
+						"cell_type": "code",
+						"metadata": {
+							"jupyter": {
+								"source_hidden": false,
+								"outputs_hidden": false
+							},
+							"nteract": {
+								"transient": {
+									"deleting": false
+								}
+							}
+						},
+						"source": [
+							""
+						],
+						"outputs": [],
+						"execution_count": null
 					}
 				]
 			},
@@ -809,7 +868,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "3e00a098-f5d1-495a-bb93-45d8fabdf1e1"
+						"spark.autotune.trackingId": "4d8d002b-f9cd-4012-8187-81d7bc41d29a"
 					}
 				},
 				"metadata": {
@@ -866,17 +925,21 @@
 			"properties": {
 				"nbformat": 4,
 				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "pool002",
+					"type": "BigDataPoolReference"
+				},
 				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
 					"numExecutors": 2,
 					"conf": {
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "0ea7c4a1-6ad9-49de-b3c4-0d11d7b333f2"
+						"spark.autotune.trackingId": "69f9ba95-a667-4eca-b827-0af8825d0c26"
 					}
 				},
 				"metadata": {
@@ -888,6 +951,21 @@
 					},
 					"language_info": {
 						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/5da07161-3770-4a4b-aa43-418cbbb627cf/resourceGroups/mm-synapse-dev-rg/providers/Microsoft.Synapse/workspaces/mm-synapse-dev/bigDataPools/pool002",
+						"name": "pool002",
+						"type": "Spark",
+						"endpoint": "https://mm-synapse-dev.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/pool002",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -927,7 +1005,7 @@
 							"db_pwd_key='synapseSQLPoolAdminPassword'"
 						],
 						"outputs": [],
-						"execution_count": null
+						"execution_count": 1
 					},
 					{
 						"cell_type": "markdown",
@@ -1028,12 +1106,12 @@
 						},
 						"source": [
 							"# Read Top 5 lines from the parking data\n",
-							"hostname = f\"{workspace_name}-ondemand.sql.azuresynapse.net\"\n",
+							"hostname = f\"samplededicated.sql.azuresynapse.net\"\n",
 							"print(hostname)\n",
 							"port = 1433\n",
-							"database = \"external_db\" \n",
+							"database = \"samplededicated\" \n",
 							"jdbcUrl = f\"jdbc:sqlserver://{hostname}:{port};database={database}\"\n",
-							"dbtable = \"dbo.parking_bay_view\"\n",
+							"dbtable = \"dbo.siteinfo\"\n",
 							"\n",
 							"#Parking Data\n",
 							"parking_data = spark.read \\\n",
@@ -1090,17 +1168,21 @@
 			"properties": {
 				"nbformat": 4,
 				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "pool002",
+					"type": "BigDataPoolReference"
+				},
 				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
 					"numExecutors": 2,
 					"conf": {
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "44dd37cd-4be1-45e8-a127-4fdcb1d2bef8"
+						"spark.autotune.trackingId": "b1c82ab9-1167-4eb8-ad5c-6f8634804298"
 					}
 				},
 				"metadata": {
@@ -1112,6 +1194,21 @@
 					},
 					"language_info": {
 						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/5da07161-3770-4a4b-aa43-418cbbb627cf/resourceGroups/mm-synapse-dev-rg/providers/Microsoft.Synapse/workspaces/mm-synapse-dev/bigDataPools/pool002",
+						"name": "pool002",
+						"type": "Spark",
+						"endpoint": "https://mm-synapse-dev.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/pool002",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -1417,17 +1514,21 @@
 			"properties": {
 				"nbformat": 4,
 				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "pool001",
+					"type": "BigDataPoolReference"
+				},
 				"sessionProperties": {
-					"driverMemory": "28g",
-					"driverCores": 4,
-					"executorMemory": "28g",
-					"executorCores": 4,
-					"numExecutors": 2,
+					"driverMemory": "56g",
+					"driverCores": 8,
+					"executorMemory": "56g",
+					"executorCores": 8,
+					"numExecutors": 1,
 					"conf": {
-						"spark.dynamicAllocation.enabled": "false",
-						"spark.dynamicAllocation.minExecutors": "2",
-						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "f8aebc90-aaec-489b-8be3-024f201c15e2"
+						"spark.dynamicAllocation.enabled": "true",
+						"spark.dynamicAllocation.minExecutors": "1",
+						"spark.dynamicAllocation.maxExecutors": "4",
+						"spark.autotune.trackingId": "a4136dee-ec6f-4c63-9c06-9842b781ead7"
 					}
 				},
 				"metadata": {
@@ -1439,6 +1540,21 @@
 					},
 					"language_info": {
 						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/5da07161-3770-4a4b-aa43-418cbbb627cf/resourceGroups/mm-synapse-dev-rg/providers/Microsoft.Synapse/workspaces/mm-synapse-dev/bigDataPools/pool001",
+						"name": "pool001",
+						"type": "Spark",
+						"endpoint": "https://mm-synapse-dev.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/pool001",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.1",
+						"nodeCount": 10,
+						"cores": 8,
+						"memory": 56,
+						"automaticScaleJobs": true
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -1720,6 +1836,459 @@
 				]
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Ds_AdlsGen2_MelbParkingData')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "LS_Datalake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"infilefolder": {
+						"type": "string"
+					},
+					"infilename": {
+						"type": "string"
+					},
+					"container": {
+						"type": "string",
+						"defaultValue": "datalake/data/lnd"
+					}
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().infilename",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@concat(dataset().container, '/', dataset().infilefolder)",
+							"type": "Expression"
+						}
+					}
+				},
+				"schema": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/LS_Datalake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Notebook 1')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "22f04028-5ae8-47e0-b483-c7764f676233"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "python"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"%%pyspark\r\n",
+							"df = spark.read.load('abfss://datalake@mmxsynapsexdev.dfs.core.windows.net/data/seed/dim_date/dim_date.csv', format='csv'\r\n",
+							"## If header exists uncomment line below\r\n",
+							"##, header=True\r\n",
+							")\r\n",
+							"display(df.limit(10))"
+						],
+						"outputs": [],
+						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/pool002')]",
+			"type": "Microsoft.Synapse/workspaces/bigDataPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Ls_Rest_MelParkSensors_01')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('Ls_Rest_MelParkSensors_01_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Ds_REST_MelbParkingData')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Ls_Rest_MelParkSensors_01",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"relativeurl": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@dataset().relativeurl",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/Ls_Rest_MelParkSensors_01')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/P_Ingest_MelbParkingData')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set infilefolder",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "infilefolder",
+							"value": {
+								"value": "@utcnow('yyyy_MM_dd_hh_mm_ss')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "DownloadSensorData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set infilefolder",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_REST_MelbParkingData",
+								"type": "DatasetReference",
+								"parameters": {
+									"relativeurl": "dtpv-d4pf.json"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Ds_AdlsGen2_MelbParkingData",
+								"type": "DatasetReference",
+								"parameters": {
+									"infilefolder": "@variables('infilefolder')",
+									"infilename": "MelbParkingSensorData.json",
+									"container": "datalake/data/lnd"
+								}
+							}
+						]
+					},
+					{
+						"name": "DownloadBayData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set infilefolder",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET"
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Ds_REST_MelbParkingData",
+								"type": "DatasetReference",
+								"parameters": {
+									"relativeurl": "wuf8-susg.json"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Ds_AdlsGen2_MelbParkingData",
+								"type": "DatasetReference",
+								"parameters": {
+									"infilefolder": "@variables('infilefolder')",
+									"infilename": "MelbParkingBayData.json",
+									"container": "datalake/data/lnd"
+								}
+							}
+						]
+					},
+					{
+						"name": "StandardizeData",
+						"type": "SynapseNotebook",
+						"dependsOn": [
+							{
+								"activity": "DownloadSensorData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "DownloadBayData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "02_standardize",
+								"type": "NotebookReference"
+							},
+							"parameters": {
+								"infilefolder": {
+									"value": {
+										"value": "@variables('infilefolder')",
+										"type": "Expression"
+									},
+									"type": "string"
+								},
+								"loadid": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "string"
+								},
+								"pipelinename": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "string"
+								},
+								"keyvaultlsname": {
+									"value": "Ls_KeyVault_01",
+									"type": "string"
+								},
+								"adls2lsname": {
+									"value": "Ls_AdlsGen2_01",
+									"type": "string"
+								}
+							}
+						}
+					},
+					{
+						"name": "TransformData",
+						"type": "SynapseNotebook",
+						"dependsOn": [
+							{
+								"activity": "StandardizeData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "03_transform",
+								"type": "NotebookReference"
+							},
+							"parameters": {
+								"loadid": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "string"
+								},
+								"pipelinename": {
+									"value": {
+										"value": "@pipeline().Pipeline",
+										"type": "Expression"
+									},
+									"type": "string"
+								},
+								"keyvaultlsname": {
+									"value": "Ls_KeyVault_01",
+									"type": "string"
+								}
+							}
+						}
+					},
+					{
+						"name": "Load SQL dedicated pool",
+						"type": "SqlPoolStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "TransformData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"sqlPool": {
+							"referenceName": "samplededicated",
+							"type": "SqlPoolReference"
+						},
+						"typeProperties": {
+							"storedProcedureName": "dbo.load_dw",
+							"storedProcedureParameters": {
+								"load_id": {
+									"value": {
+										"value": "@pipeline().RunId",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"infilefolder": {
+						"type": "String",
+						"defaultValue": "Ind"
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2021-10-26T23:43:06Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/Ds_REST_MelbParkingData')]",
+				"[concat(variables('workspaceId'), '/datasets/Ds_AdlsGen2_MelbParkingData')]",
+				"[concat(variables('workspaceId'), '/notebooks/02_standardize')]",
+				"[concat(variables('workspaceId'), '/notebooks/03_transform')]",
+				"[concat(variables('workspaceId'), '/sqlPools/samplededicated')]"
+			]
 		}
 	]
 }
