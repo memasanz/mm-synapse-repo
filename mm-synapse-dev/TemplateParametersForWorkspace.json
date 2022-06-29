@@ -14,11 +14,11 @@
 		"LS_KeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://mm-kv-dev.vault.azure.net/"
 		},
-		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
-			"value": "https://mmxsynapsexdev.dfs.core.windows.net"
-		},
 		"Ls_Rest_MelParkSensors_01_properties_typeProperties_url": {
 			"value": "https://data.melbourne.vic.gov.au/resource/"
+		},
+		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://mmxsynapsexdev.dfs.core.windows.net"
 		}
 	}
 }
