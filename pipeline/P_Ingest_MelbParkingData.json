@@ -259,6 +259,10 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"sqlPool": {
+					"referenceName": "samplededicated",
+					"type": "SqlPoolReference"
+				},
 				"typeProperties": {
 					"storedProcedureName": "dbo.load_dw",
 					"storedProcedureParameters": {

@@ -3,17 +3,21 @@
 	"properties": {
 		"nbformat": 4,
 		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "pool002",
+			"type": "BigDataPoolReference"
+		},
 		"sessionProperties": {
-			"driverMemory": "28g",
-			"driverCores": 4,
-			"executorMemory": "28g",
-			"executorCores": 4,
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
 			"numExecutors": 2,
 			"conf": {
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "5de5cfa1-b738-4efa-96c6-173db5ca216f"
+				"spark.autotune.trackingId": "4e8a62fd-93fe-4558-ae83-4edbb60c84b5"
 			}
 		},
 		"metadata": {
@@ -25,6 +29,21 @@
 			},
 			"language_info": {
 				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/5da07161-3770-4a4b-aa43-418cbbb627cf/resourceGroups/mm-synapse-dev-rg/providers/Microsoft.Synapse/workspaces/mm-synapse-dev/bigDataPools/pool002",
+				"name": "pool002",
+				"type": "Spark",
+				"endpoint": "https://mm-synapse-dev.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/pool002",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.1",
+				"nodeCount": 10,
+				"cores": 8,
+				"memory": 56,
+				"automaticScaleJobs": false
 			},
 			"sessionKeepAliveTimeout": 30
 		},
@@ -63,7 +82,7 @@
 					"db_user_key='synapseSQLPoolAdminUsername'\n",
 					"db_pwd_key='synapseSQLPoolAdminPassword'"
 				],
-				"execution_count": null
+				"execution_count": 1
 			},
 			{
 				"cell_type": "markdown",
@@ -162,12 +181,12 @@
 				},
 				"source": [
 					"# Read Top 5 lines from the parking data\n",
-					"hostname = f\"{workspace_name}-ondemand.sql.azuresynapse.net\"\n",
+					"hostname = f\"samplededicated.sql.azuresynapse.net\"\n",
 					"print(hostname)\n",
 					"port = 1433\n",
-					"database = \"external_db\" \n",
+					"database = \"samplededicated\" \n",
 					"jdbcUrl = f\"jdbc:sqlserver://{hostname}:{port};database={database}\"\n",
-					"dbtable = \"dbo.parking_bay_view\"\n",
+					"dbtable = \"dbo.siteinfo\"\n",
 					"\n",
 					"#Parking Data\n",
 					"parking_data = spark.read \\\n",
