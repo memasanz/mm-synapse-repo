@@ -5,8 +5,14 @@
 		"workspaceName": {
 			"value": "mm-synapse-dev"
 		},
+		"LS_Datalake_accountKey": {
+			"value": ""
+		},
 		"mm-synapse-dev-WorkspaceDefaultSqlServer_connectionString": {
 			"value": ""
+		},
+		"LS_Datalake_properties_typeProperties_url": {
+			"value": "https://mmxsynapsexdev.dfs.core.windows.net/"
 		},
 		"LS_KeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://mm-kv-dev.vault.azure.net/"
