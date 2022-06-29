@@ -191,6 +191,10 @@
 							"value": "LS_Datalake",
 							"type": "string"
 						}
+					},
+					"sparkPool": {
+						"referenceName": "pool001",
+						"type": "BigDataPoolReference"
 					}
 				}
 			},
@@ -237,6 +241,10 @@
 							"value": "LS_KeyVault",
 							"type": "string"
 						}
+					},
+					"sparkPool": {
+						"referenceName": "pool001",
+						"type": "BigDataPoolReference"
 					}
 				}
 			},

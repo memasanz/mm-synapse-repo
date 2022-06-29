@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "60f7d6dd-4fe1-44d6-aa84-3d645b12b790"
+				"spark.autotune.trackingId": "f7a04460-3dea-4a5f-9859-c1beba201b51"
 			}
 		},
 		"metadata": {
@@ -91,7 +91,7 @@
 					"# Get keyvault linked service name\n",
 					"keyvaultlsname = 'LS_KeyVault'"
 				],
-				"execution_count": null
+				"execution_count": 1
 			},
 			{
 				"cell_type": "markdown",
@@ -143,7 +143,7 @@
 					"sensors_filepath = os.path.join(base_path, \"MelbParkingSensorData.json\")\n",
 					"print(sensors_filepath)"
 				],
-				"execution_count": null
+				"execution_count": 2
 			},
 			{
 				"cell_type": "markdown",
@@ -269,7 +269,7 @@
 					"#    dimParkingbayCount       = customDimensions.new_parkingbay_count\n",
 					""
 				],
-				"execution_count": null
+				"execution_count": 4
 			},
 			{
 				"cell_type": "markdown",
