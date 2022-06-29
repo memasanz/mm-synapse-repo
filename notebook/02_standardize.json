@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "97a21896-6ccd-4661-a1d3-3ff78f8ca375"
+				"spark.autotune.trackingId": "60f7d6dd-4fe1-44d6-aa84-3d645b12b790"
 			}
 		},
 		"metadata": {
@@ -89,7 +89,7 @@
 					"loadid = ''\n",
 					"\n",
 					"# Get keyvault linked service name\n",
-					"keyvaultlsname = 'Ls_KeyVault_01'"
+					"keyvaultlsname = 'LS_KeyVault'"
 				],
 				"execution_count": null
 			},

@@ -184,11 +184,11 @@
 							"type": "string"
 						},
 						"keyvaultlsname": {
-							"value": "Ls_KeyVault_01",
+							"value": "LS_KeyVault",
 							"type": "string"
 						},
 						"adls2lsname": {
-							"value": "Ls_AdlsGen2_01",
+							"value": "LS_Datalake",
 							"type": "string"
 						}
 					}
@@ -234,7 +234,7 @@
 							"type": "string"
 						},
 						"keyvaultlsname": {
-							"value": "Ls_KeyVault_01",
+							"value": "LS_KeyVault",
 							"type": "string"
 						}
 					}
