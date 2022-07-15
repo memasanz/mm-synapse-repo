@@ -1,0 +1,25 @@
+{
+	"name": "tr_eventgrid",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "move data",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/raw/blobs/Site",
+			"blobPathEndsWith": ".csv",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/5da07161-3770-4a4b-aa43-418cbbb627cf/resourceGroups/mm-synapse-dev-rg/providers/Microsoft.Storage/storageAccounts/mmxsynapsexdev",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
