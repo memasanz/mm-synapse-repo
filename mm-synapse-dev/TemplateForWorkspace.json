@@ -2435,6 +2435,7 @@
 				"activities": [
 					{
 						"name": "Copy data1",
+						"description": "silly change",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
