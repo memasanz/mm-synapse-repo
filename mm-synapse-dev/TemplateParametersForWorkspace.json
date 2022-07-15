@@ -19,6 +19,9 @@
 		},
 		"mm-synapse-dev-WorkspaceDefaultStorage_properties_typeProperties_url": {
 			"value": "https://mmxsynapsexdev.dfs.core.windows.net"
+		},
+		"tr_eventgrid_properties_typeProperties_scope": {
+			"value": "/subscriptions/5da07161-3770-4a4b-aa43-418cbbb627cf/resourceGroups/mm-synapse-dev-rg/providers/Microsoft.Storage/storageAccounts/mmxsynapsexdev"
 		}
 	}
 }
